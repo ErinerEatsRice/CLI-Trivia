@@ -63,16 +63,16 @@ async function handleAnswer (isCorrect) {
     await sleep(2000)
 
     if (isCorrect) {
-        spinner.success({ text: 'Correct! Well done.' })
+        spinner.success({ text: `Well done, ${playerName}. You got the correct answer.` })
         await triviaQues()
     } else {
         wrongCount++
-        spinner.error({ text: `Wrong! Attempts remaining: ${3 - wrongCount}` })
+        spinner.error({ text: `You got the answer wrong. You still have ${wrongCount - 1} attempt(s) left to answer.` })
 
         if (wrongCount < 3) {
             await triviaQues()
         } else {
-            console.log(chalk.red(`\nGame over! You had ${wrongCount} wrong attempts.\n`))
+            console.log(chalk.red(`\nGame over! You messed up for very last chance to answer.\n`))
             process.exit()
         }
     }
