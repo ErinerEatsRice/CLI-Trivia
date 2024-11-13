@@ -67,7 +67,7 @@ async function handleAnswer (isCorrect) {
         await triviaQues()
     } else {
         wrongCount++
-        spinner.error({ text: `You got the answer wrong. You still have ${wrongCount - 1} attempt(s) left to answer.` })
+        spinner.error({ text: `You got the answer wrong. You still have ${3 - wrongCount} attempt(s) left to answer.` })
 
         if (wrongCount < 3) {
             await triviaQues()
