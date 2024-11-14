@@ -34,6 +34,7 @@ const ascii = (data) => {
 
 let wrongCount = 0
 let playerName
+let difficultyLevel
 
 async function welcome () {
     await ascii('WELCOME TO TRIVIA')
@@ -58,6 +59,16 @@ async function start () {
     console.log(chalk.magenta(`\nHi, ${playerName}. Welcome to our console Trivia Game!\n`))
 }
 
+async function askDifficulty () {
+    const difficultyQues = await inquirer.prompt({
+        name: 'difficultyQues',
+        type: 'list',
+        message: chalk.green('Choose your difficulty level:'),
+        choices: ['Easy', 'Medium', 'Hard']
+    })
+    difficultyLevel = difficultyQues.difficultyQues
+}
+
 async function handleAnswer (isCorrect) {
     const spinner = createSpinner('Checking answer...').start()
     await sleep(2000)
@@ -79,7 +90,7 @@ async function handleAnswer (isCorrect) {
 }
 
 async function askQuestion () {
-    const data = await axios.get('https://opentdb.com/api.php?amount=1&type=multiple')
+    const data = await axios.get(`https://opentdb.com/api.php?amount=1&difficulty=${difficultyLevel || 'easy'}&type=multiple`)
     const questionData = data.data.results[0]
     const { question, correct_answer, incorrect_answers } = questionData
     const answers = [correct_answer, ...incorrect_answers].shuffleArray()
@@ -121,4 +132,5 @@ async function triviaQues () {
 
 await welcome()
 await start()
+await askDifficulty()
 await triviaQues()
